@@ -3,6 +3,7 @@ package com.supplynext.company_api.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -14,6 +15,8 @@ public class GlobalRecord {
     UUID sysId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    @ManyToOne
     private User createdBy;
-    private User updatedBy;
+    @ManyToMany
+    private List<User> updatedBy;
 }

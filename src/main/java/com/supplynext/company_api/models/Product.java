@@ -1,5 +1,6 @@
 package com.supplynext.company_api.models;
 
+import com.supplynext.company_api.CompanyApiApplication;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,7 @@ import java.util.UUID;
 public class Product extends GlobalRecord{
     private String productId;
     @ManyToOne
-    ManufacturerCompany manufacturerCompany;
+    Company manufacturerCompany;
     @Column(unique = true)
     String skuCode;
     String brandName;

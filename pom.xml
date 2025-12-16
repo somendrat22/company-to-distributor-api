@@ -58,7 +58,13 @@
             <version>1.18.30</version>
             <optional>true</optional>
 		</dependency>
-		<dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot.env/spring-boot-starter-parent -->
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-java</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa-test</artifactId>
 			<scope>test</scope>

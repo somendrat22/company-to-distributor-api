@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CompanyApiApplication {
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(CompanyApiApplication.class, args);
 	}
 
