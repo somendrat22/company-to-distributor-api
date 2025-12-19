@@ -13,7 +13,7 @@ public class MappingUtility {
         Company company = new Company();
 
         // Primary Key
-        company.setCompanyId(CommonUtility.generateCompanyId("COMP"));
+        company.setCompanyId(CommonUtility.generateIdForEntity("COMP"));
 
         // Basic Info
         company.setCompanyName(companyDetails.getCompanyName());

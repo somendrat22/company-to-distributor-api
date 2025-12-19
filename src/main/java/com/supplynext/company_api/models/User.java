@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -23,6 +24,8 @@ public class User {
     private String addressLine1;
     private String addressLine2;
     private String addressLine3;
+    @ManyToMany
+    List<Role> roles;
     private int pincode;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
