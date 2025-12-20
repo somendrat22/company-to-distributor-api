@@ -1,5 +1,6 @@
 package com.supplynext.company_api.utilities;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -17,6 +18,7 @@ public class CommonUtility {
     private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String DIGITS = "0123456789";
     private static final String SPECIAL = "@#$%&*!";
+    private static final int SALT_ROUNDS = 12;
 
     private static final String ALL = LOWER + UPPER + DIGITS + SPECIAL;
     private static final SecureRandom RANDOM = new SecureRandom();
@@ -59,5 +61,13 @@ public class CommonUtility {
             characters[i] = temp;
         }
         return new String(characters);
+    }
+
+    public static String encode(String rawPassword) {
+        return BCrypt.hashpw(rawPassword, BCrypt.gensalt(SALT_ROUNDS));
+    }
+
+    public static boolean matches(String rawPassword, String hashedPassword) {
+        return BCrypt.checkpw(rawPassword, hashedPassword);
     }
 }
