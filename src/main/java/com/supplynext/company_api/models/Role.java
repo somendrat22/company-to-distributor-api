@@ -19,7 +19,8 @@ public class Role extends GlobalRecord{
     // sales_manager
     @Column(unique = true, nullable = false)
     String roleId;
-    String roleName;
+    @Column(unique = true)
+    String roleName; // Tcs_Admin, Infosys_salesmanager
     @ManyToMany
     List<Operation> operations;
 }

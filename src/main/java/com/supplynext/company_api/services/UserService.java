@@ -17,4 +17,8 @@ public class UserService {
     public User getBotUser(){
         return userRepository.findByEmail(botEmail);
     }
+
+    public User getUserByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
 }
