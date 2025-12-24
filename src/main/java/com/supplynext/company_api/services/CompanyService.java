@@ -3,6 +3,7 @@ package com.supplynext.company_api.services;
 import com.supplynext.company_api.dto.CompanyOnboardingRequestDto;
 import com.supplynext.company_api.models.Company;
 import com.supplynext.company_api.models.CompanyEmployee;
+import com.supplynext.company_api.models.Document;
 import com.supplynext.company_api.repositories.CompanyRepository;
 import com.supplynext.company_api.utilities.CommonUtility;
 import com.supplynext.company_api.utilities.MappingUtility;
@@ -14,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CompanyService {
@@ -44,10 +47,18 @@ public class CompanyService {
         CompanyEmployee admin = companyEmployeeService.createFirstAdminAccount(company);
         String folderName = "company/" + company.getCompanyId();
         // Admin Account for the company
-        documentService.uploadDocument(gstCertificate, "gstCertificate", "gst-certificate", folderName);
-        documentService.uploadDocument(panCard, "panCard", "pan-card", folderName);
-        documentService.uploadDocument(panCard, "companyRegistrationDoc", "company-registration-doc", folderName);
-        documentService.uploadDocument(panCard, "companyLogo", "company-logo", folderName);
+        List<Document> documents = new ArrayList<>();
+        Document gCertificate = documentService.uploadDocument(gstCertificate, "gstCertificate", "gst-certificate", folderName);
+        documents.add(gCertificate);
+        Document pCard = documentService.uploadDocument(panCard, "panCard", "pan-card", folderName);
+        documents.add(pCard);
+        Document cinDoc = documentService.uploadDocument(panCard, "companyRegistrationDoc", "company-registration-doc", folderName);
+        documents.add(cinDoc);
+        Document imageDoc = documentService.uploadDocument(panCard, "companyLogo", "company-logo", folderName);
+        documents.add(imageDoc);
+        company.setDocumentList(documents);
+        company.setCompanyLogoUrl(imageDoc.getDocumentUrl());
+        this.save(company);
         // Mail the company admin that your account registered succes fully
     }
 

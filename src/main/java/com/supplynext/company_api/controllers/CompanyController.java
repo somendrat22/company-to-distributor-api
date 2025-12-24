@@ -29,7 +29,7 @@ public class CompanyController {
     // Whenever we upload document to the endpoint we call it as multipart endpoint.
     @PostMapping("/start-onboarding")
     public ResponseEntity startOnBoarding(
-            @RequestPart(value = "gstCertificate") MultipartFile gstCertificate,
+            @RequestPart(value = "gstCertificate", required = false) MultipartFile gstCertificate,
             @RequestPart(value = "panCard") MultipartFile panCard,
             @RequestPart(value = "companyRegistrationDocument") MultipartFile companyRegistrationDoc,
             @RequestPart(value = "companyLogo") MultipartFile companyLogo,

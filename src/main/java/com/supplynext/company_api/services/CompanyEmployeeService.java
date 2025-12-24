@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CompanyEmployeeService {
@@ -46,5 +47,10 @@ public class CompanyEmployeeService {
         companyEmployee.setRoles(List.of(role));
         // We need to create the role for the company admin
         return this.save(companyEmployee);
+    }
+
+    public Company getEmployeeCompanyDetails(UUID userSysId){
+        CompanyEmployee companyEmployee = companyEmployeeRepository.findById(userSysId).orElse(null);
+        return companyEmployee.getCompany();
     }
 }

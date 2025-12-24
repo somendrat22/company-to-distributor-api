@@ -24,6 +24,7 @@ public class Company extends GlobalRecord{
     private String panNumber;
     private String cinNumber;
     private String companyType;
+    private String companyLogoUrl;
     // Address
     private String addressLine1;
     private String addressLine2;
@@ -47,3 +48,4 @@ public class Company extends GlobalRecord{
     List<Document> documentList;
     private String status;
 }
+

@@ -21,11 +21,11 @@ public class JwtConfiguration {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf()
-                .disable()
+        return http.csrf(c -> c.disable())
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers(
-                                        "/c2d/api/v1/company/start-onboarding"
+                                        "/c2d/api/v1/company/start-onboarding",
+                                        "/c2d/api/v1/user/login"
                                 ).permitAll()
                                 .anyRequest().authenticated()
                 )
