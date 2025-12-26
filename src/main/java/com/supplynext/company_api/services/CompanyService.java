@@ -52,9 +52,9 @@ public class CompanyService {
         documents.add(gCertificate);
         Document pCard = documentService.uploadDocument(panCard, "panCard", "pan-card", folderName);
         documents.add(pCard);
-        Document cinDoc = documentService.uploadDocument(panCard, "companyRegistrationDoc", "company-registration-doc", folderName);
+        Document cinDoc = documentService.uploadDocument(companyRegistrationDoc, "companyRegistrationDoc", "company-registration-doc", folderName);
         documents.add(cinDoc);
-        Document imageDoc = documentService.uploadDocument(panCard, "companyLogo", "company-logo", folderName);
+        Document imageDoc = documentService.uploadDocument(companyLogo, "companyLogo", "company-logo", folderName);
         documents.add(imageDoc);
         company.setDocumentList(documents);
         company.setCompanyLogoUrl(imageDoc.getDocumentUrl());

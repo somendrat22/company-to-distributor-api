@@ -58,6 +58,10 @@ public class OperationScheduler {
         this.insertOperation("PAYMENT_RECEIVE", "PAYMENT");
         this.insertOperation("PAYMENT_REFUND", "PAYMENT");
         this.insertOperation("PAYMENT_FAILED", "PAYMENT");
+        this.insertOperation("INVITE_EMPLOYEE", "SECURITY");
+        this.insertOperation("CREATE_ROLE", "SECURITY");
+        this.insertOperation("VIEW_ROLE", "SECURITY");
+        this.insertOperation("VIEW_OPERATIONS", "SECURITY");
     }
 
     public void insertOperation(String operationName, String operationType) {
