@@ -30,10 +30,12 @@ public class UserController {
             UserLoginRespDto loginResp = authService.loginUser(userLoginDto);
             return new ResponseEntity(loginResp, HttpStatus.OK);
         }catch (InvalidCredentialsException e){
+
             HashMap<String, String> resp = new HashMap<>();
             resp.put("message", e.getMessage());
             return new ResponseEntity(resp, HttpStatus.UNAUTHORIZED);
         }catch (Exception e){
+            e.printStackTrace();
             HashMap<String, String> resp = new HashMap<>();
             resp.put("message", e.getMessage());
             return new ResponseEntity(resp, HttpStatus.INTERNAL_SERVER_ERROR);

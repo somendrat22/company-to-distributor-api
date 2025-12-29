@@ -25,7 +25,7 @@ public class User {
     private String addressLine1;
     private String addressLine2;
     private String addressLine3;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     List<Role> roles;
     private int pincode;
     private LocalDateTime createdAt;

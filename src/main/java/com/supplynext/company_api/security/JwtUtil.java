@@ -6,6 +6,7 @@ import com.supplynext.company_api.services.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import java.util.*;
  * This class will contain utility logics like generateJwtToken, DecryptJwtToken,
  * ValidateJwtToken
  */
+@Slf4j
 @Component
 public class JwtUtil {
 
@@ -74,10 +76,11 @@ public class JwtUtil {
                 }
             }
             if(flag == false){
+                log.warn("Invalid Token");
                 return false;
             }
         }
-
+        log.info("Token is valid");
         return true;
 
     }
