@@ -42,6 +42,10 @@ public class RoleService {
         return this.save(role);
     }
 
+    public List<Role> getRolesByCompanyName(String companyLegalName){
+        return roleRepository.fetchRolesByCompanyName(companyLegalName);
+    }
+
 
     public Role save(Role role){
         return roleRepository.save(role);

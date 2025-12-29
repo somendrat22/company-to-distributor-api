@@ -1,9 +1,7 @@
 package com.supplynext.company_api.services;
 
 import com.supplynext.company_api.dto.CompanyOnboardingRequestDto;
-import com.supplynext.company_api.models.Company;
-import com.supplynext.company_api.models.CompanyEmployee;
-import com.supplynext.company_api.models.Document;
+import com.supplynext.company_api.models.*;
 import com.supplynext.company_api.repositories.CompanyRepository;
 import com.supplynext.company_api.utilities.CommonUtility;
 import com.supplynext.company_api.utilities.MappingUtility;
@@ -29,6 +27,8 @@ public class CompanyService {
     CompanyRepository companyRepository;
     @Autowired
     CompanyEmployeeService companyEmployeeService;
+    @Autowired
+    RoleService roleService;
 
     public void startOnboarding(
            MultipartFile gstCertificate,
@@ -60,6 +60,16 @@ public class CompanyService {
         company.setCompanyLogoUrl(imageDoc.getDocumentUrl());
         this.save(company);
         // Mail the company admin that your account registered succes fully
+    }
+
+
+    public List<Role> getCompanyRoleByUser(User user){
+        // Before getting company roles -> we need to get company details
+        // We need to indetify the user company
+        Company company = companyEmployeeService.getEmployeeCompanyDetails(user.getSysId());
+        // We got the company we need to get the roles of the company
+        // CompanyService will call RoleService to get roles by company
+        return roleService.getRolesByCompanyName(company.getLegalName());
     }
 
 

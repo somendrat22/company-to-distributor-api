@@ -1,6 +1,8 @@
 package com.supplynext.company_api.controllers;
 
 import com.supplynext.company_api.dto.CompanyOnboardingRequestDto;
+import com.supplynext.company_api.exceptions.UnAuthorizedException;
+import com.supplynext.company_api.models.Role;
 import com.supplynext.company_api.models.User;
 import com.supplynext.company_api.services.AuthService;
 import com.supplynext.company_api.services.CompanyService;
@@ -14,6 +16,7 @@ import tools.jackson.databind.ObjectMapper;
 
 import javax.management.ObjectName;
 import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -57,13 +60,25 @@ public class CompanyController {
     public ResponseEntity getCompanyRolesByCurrentUserSession(
             @RequestHeader String Authorization
     ){
-        /** Instead of getting user details first thing we should check current user is having access to
-         * get the roles or VIEW_ROLE
-         * If user is having the access then we should get the user details else we should reject the request
-         */
-        User user = authService.isUserHavingAccessToPerformOperation(Authorization, "VIEW_ROLE");
-        /**
-         * After getting user we shoulf call role service to get the roles of the company
-         */
+        try {
+            /** Instead of getting user details first thing we should check current user is having access to
+             * get the roles or VIEW_ROLE
+             * If user is having the access then we should get the user details else we should reject the request
+             */
+            User user = authService.isUserHavingAccessToPerformOperation(Authorization, "VIEW_ROLE");
+            /**
+             * After getting user we shoulf call role service to get the roles of the company
+             */
+            List<Role> roles = companyService.getCompanyRoleByUser(user);
+            return new ResponseEntity<>(roles,HttpStatus.OK);
+        }catch (UnAuthorizedException e){
+            HashMap<String, String> resp = new HashMap<>();
+            resp.put("message", e.getMessage());
+            return new ResponseEntity(resp, HttpStatus.UNAUTHORIZED);
+        }catch (Exception e){
+            HashMap<String, String> resp = new HashMap<>();
+            resp.put("message", e.getMessage());
+            return new ResponseEntity(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
