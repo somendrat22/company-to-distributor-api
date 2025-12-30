@@ -2,11 +2,13 @@ package com.supplynext.company_api.services;
 
 import com.supplynext.company_api.dto.CompanyOnboardingRequestDto;
 import com.supplynext.company_api.dto.CreateRoleRequestDto;
+import com.supplynext.company_api.dto.InviteEmployeeDto;
 import com.supplynext.company_api.models.*;
 import com.supplynext.company_api.repositories.CompanyRepository;
 import com.supplynext.company_api.utilities.CommonUtility;
 import com.supplynext.company_api.utilities.MappingUtility;
 import io.imagekit.sdk.exceptions.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class CompanyService {
 
@@ -30,6 +33,8 @@ public class CompanyService {
     CompanyEmployeeService companyEmployeeService;
     @Autowired
     RoleService roleService;
+    @Autowired
+    MailService mailService;
 
     public void startOnboarding(
            MultipartFile gstCertificate,
@@ -82,6 +87,42 @@ public class CompanyService {
                 );
     }
 
+    public CompanyEmployee inviteEmployeeToInviterOrg(
+            User inviter,
+            InviteEmployeeDto inviteEmployeeDto
+    ) {
+        log.info("Starting employee invitation process. InviterSysId={}", inviter.getSysId());
+        log.debug("InviteEmployeeDto received: {}", inviteEmployeeDto);
+
+        // Fetch company details of inviter
+        log.info("Fetching company details for inviterSysId={}", inviter.getSysId());
+        Company company =
+                companyEmployeeService.getEmployeeCompanyDetails(inviter.getSysId());
+
+        log.info("Company details fetched successfully. CompanyId={}", company.getSysId());
+
+        // Create employee record for company
+        log.info("Creating company employee record for CompanyId={}", company.getSysId());
+        CompanyEmployee companyEmployee =
+                companyEmployeeService.createEmployeeForCompany(
+                        company,
+                        inviter,
+                        inviteEmployeeDto
+                );
+
+        log.info("Company employee created successfully. CompanyEmployeeId={}",
+                companyEmployee.getSysId());
+
+        // Send invitation email
+        log.info("Sending invitation email to employee. CompanyEmployeeId={}",
+                companyEmployee.getSysId());
+        mailService.sendInviteEmployeeMail(companyEmployee, inviter);
+
+        log.info("Invitation email sent successfully. CompanyEmployeeId={}",
+                companyEmployee.getSysId());
+
+        return companyEmployee;
+    }
 
 
     public Company save(Company company){

@@ -1,5 +1,7 @@
 package com.supplynext.company_api.services;
 
+import com.supplynext.company_api.dto.InviteEmployeeDto;
+import com.supplynext.company_api.enums.UserStatus;
 import com.supplynext.company_api.models.Company;
 import com.supplynext.company_api.models.CompanyEmployee;
 import com.supplynext.company_api.models.Role;
@@ -48,6 +50,31 @@ public class CompanyEmployeeService {
         // We need to create the role for the company admin
         return this.save(companyEmployee);
     }
+
+   public CompanyEmployee createEmployeeForCompany(
+           Company company,
+           User inviter,
+           InviteEmployeeDto inviteEmployeeDto
+   ){
+
+        CompanyEmployee companyEmployee = new CompanyEmployee();
+        companyEmployee.setEmail(inviteEmployeeDto.getEmail());
+        companyEmployee.setPassword(CommonUtility.generateRandomPassword(15));
+        companyEmployee.setFullName(inviteEmployeeDto.getFullName());
+        companyEmployee.setPincode(inviteEmployeeDto.getPincode());
+        companyEmployee.setAddressLine1(inviteEmployeeDto.getAddressLine1());
+        companyEmployee.setAddressLine2(inviter.getAddressLine2());
+        companyEmployee.setAddressLine3(inviter.getAddressLine3());
+        companyEmployee.setCompany(company);
+        companyEmployee.setCreatedAt(LocalDateTime.now());
+        companyEmployee.setCompanyEmployeeId(CommonUtility.COMPANY_EMPLOYEE_ENTITY_NAME);
+        companyEmployee.setPhoneNumber(inviteEmployeeDto.getPhoneNumber());
+        companyEmployee.setStatus(UserStatus.INVITED.toString());
+        companyEmployee.setUpdatedAt(LocalDateTime.now());
+        companyEmployee.setRoles(roleService.fetchAllRolesBySysId(inviteEmployeeDto.getRoles()));
+        return this.save(companyEmployee);
+
+   }
 
     public Company getEmployeeCompanyDetails(UUID userSysId){
         CompanyEmployee companyEmployee = companyEmployeeRepository.findById(userSysId).orElse(null);

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're Invited to SupplyNext</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        }
+        .header {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: #ffffff;
+            padding: 28px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 32px;
+            color: #333333;
+        }
+        .content h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+        .content p {
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+        .invite-box {
+            background-color: #f1f5f9;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 24px 0;
+        }
+        .cta {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .cta a {
+            background-color: #2563eb;
+            color: #ffffff !important;
+            padding: 14px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .footer {
+            background-color: #f8fafc;
+            padding: 22px;
+            text-align: center;
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .footer a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <h1>You're Invited to SupplyNext</h1>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+        <h2>Hello <span th:text="${employeeName}">Employee</span>,</h2>
+
+        <p>
+            <strong th:text="${companyName}">Company Name</strong>
+            has invited you to join their organization on
+            <strong>SupplyNext</strong>.
+        </p>
+
+        <div class="invite-box">
+            <p><strong>Invitation Details</strong></p>
+            <p>
+                Organization: <span th:text="${companyName}"></span><br>
+                Invited By: <span th:text="${invitedBy}"></span>
+            </p>
+        </div>
+
+        <p>
+            Click the button below to accept the invitation and complete your account setup.
+        </p>
+
+        <div class="cta">
+            <a th:href="${inviteLink}">
+                Accept Invitation
+            </a>
+        </div>
+
+        <p>
+            This invitation link will expire in
+            <strong><span th:text="${expiryHours}">24</span> hours</strong>.
+            If you did not expect this invitation, you can safely ignore this email.
+        </p>
+
+        <p>
+            Warm regards,<br>
+            <strong>The SupplyNext Team</strong>
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        © <span th:text="${year}">2025</span> SupplyNext. All rights reserved.<br>
+        Need help?
+        <a href="mailto:maint.supplynest@gmail.com">maint.supplynest@gmail.com</a>
+    </div>
+
+</div>
+
+</body>
+</html>

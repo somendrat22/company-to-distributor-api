@@ -1,7 +1,10 @@
 package com.supplynext.company_api.controllers;
 
+import com.supplynext.company_api.constants.OperationNameConstants;
 import com.supplynext.company_api.dto.CompanyOnboardingRequestDto;
+import com.supplynext.company_api.dto.InviteEmployeeDto;
 import com.supplynext.company_api.exceptions.UnAuthorizedException;
+import com.supplynext.company_api.models.CompanyEmployee;
 import com.supplynext.company_api.models.Role;
 import com.supplynext.company_api.models.User;
 import com.supplynext.company_api.services.AuthService;
@@ -82,4 +85,48 @@ public class CompanyController {
             return new ResponseEntity(resp, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    @PostMapping("/invite-employee")
+    public ResponseEntity inviteEmployeeToOrg(
+            @RequestBody InviteEmployeeDto inviteEmployeeDto,
+            @RequestHeader String Authorization
+    ) {
+        log.info("Invite employee API called");
+        log.debug("InviteEmployeeDto received: {}", inviteEmployeeDto);
+
+        try {
+            log.info("Validating user authorization for INVITE_EMPLOYEE operation");
+            User inviter = authService.isUserHavingAccessToPerformOperation(
+                    Authorization,
+                    OperationNameConstants.INVITE_EMPLOYEE
+            );
+
+            log.info("Authorization successful for userId={}", inviter.getSysId());
+
+            log.info("Inviting employee to organization. Inviter userId={}", inviter.getSysId());
+            CompanyEmployee companyEmployee =
+                    companyService.inviteEmployeeToInviterOrg(inviter, inviteEmployeeDto);
+
+            log.info("Employee invited successfully. CompanyEmployeeId={}",
+                    companyEmployee.getSysId());
+
+            return new ResponseEntity(companyEmployee, HttpStatus.CREATED);
+
+        } catch (UnAuthorizedException e) {
+            log.warn("Unauthorized access while inviting employee. Reason={}", e.getMessage());
+
+            HashMap<String, String> resp = new HashMap<>();
+            resp.put("message", e.getMessage());
+            return new ResponseEntity(resp, HttpStatus.UNAUTHORIZED);
+
+        } catch (Exception e) {
+            log.error("Unexpected error occurred while inviting employee", e);
+
+            HashMap<String, String> resp = new HashMap<>();
+            resp.put("message", e.getMessage());
+            return new ResponseEntity(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

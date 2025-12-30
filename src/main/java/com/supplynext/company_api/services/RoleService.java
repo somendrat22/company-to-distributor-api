@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class RoleService {
@@ -61,6 +63,14 @@ public class RoleService {
         List<Operation> operations = operationService.fetchOperationsBySysId(createRoleRequestDto.getOperationsSysId());
         role.setOperations(operations);
         return this.save(role);
+    }
+
+    public List<Role> fetchAllRolesBySysId(List<UUID> sysIds){
+        List<Role> roles = new ArrayList<>();
+        for(UUID sysId : sysIds){
+            roles.add(roleRepository.findById(sysId).orElse(null));
+        }
+        return roles;
     }
 
 

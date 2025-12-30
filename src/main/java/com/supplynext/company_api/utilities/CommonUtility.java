@@ -14,6 +14,7 @@ public class CommonUtility {
     private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("yyyyMMdd-HHmmssSSS");
 
+    public static final String COMPANY_EMPLOYEE_ENTITY_NAME = "COMP-EMP";
     private static final String LOWER = "abcdefghijklmnopqrstuvwxyz";
     private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String DIGITS = "0123456789";
