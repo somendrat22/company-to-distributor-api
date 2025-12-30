@@ -22,6 +22,7 @@ public class JwtConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(c -> c.disable())
+                .cors(c -> c.configure(http))
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers(
                                         "/c2d/api/v1/company/start-onboarding",

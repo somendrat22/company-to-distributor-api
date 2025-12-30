@@ -1,6 +1,8 @@
 package com.supplynext.company_api.services;
 
+import com.supplynext.company_api.dto.CreateRoleRequestDto;
 import com.supplynext.company_api.models.Company;
+import com.supplynext.company_api.models.Operation;
 import com.supplynext.company_api.models.Role;
 import com.supplynext.company_api.models.User;
 import com.supplynext.company_api.repositories.OperationRepository;
@@ -44,6 +46,21 @@ public class RoleService {
 
     public List<Role> getRolesByCompanyName(String companyLegalName){
         return roleRepository.fetchRolesByCompanyName(companyLegalName);
+    }
+
+    public Role createRoleForCompany(String companyLegalName,
+                                     CreateRoleRequestDto createRoleRequestDto,
+                                     User user){
+        Role role = new Role();
+        role.setRoleId(CommonUtility.generateIdForEntity("ROLE"));
+        role.setRoleName(companyLegalName + "_" + createRoleRequestDto.getRoleName());
+        role.setCreatedBy(user);
+        role.setUpdatedBy(List.of(user));
+        role.setCreatedAt(LocalDateTime.now());
+        role.setUpdatedAt(LocalDateTime.now());
+        List<Operation> operations = operationService.fetchOperationsBySysId(createRoleRequestDto.getOperationsSysId());
+        role.setOperations(operations);
+        return this.save(role);
     }
 
 

@@ -1,6 +1,7 @@
 package com.supplynext.company_api.services;
 
 import com.supplynext.company_api.dto.CompanyOnboardingRequestDto;
+import com.supplynext.company_api.dto.CreateRoleRequestDto;
 import com.supplynext.company_api.models.*;
 import com.supplynext.company_api.repositories.CompanyRepository;
 import com.supplynext.company_api.utilities.CommonUtility;
@@ -70,6 +71,15 @@ public class CompanyService {
         // We got the company we need to get the roles of the company
         // CompanyService will call RoleService to get roles by company
         return roleService.getRolesByCompanyName(company.getLegalName());
+    }
+
+    public Role createRoleForCompanyByUserSession(User user, CreateRoleRequestDto createRoleRequestDto){
+        Company company = companyEmployeeService.getEmployeeCompanyDetails(user.getSysId());
+        // Role Service
+        return roleService.createRoleForCompany(company.getLegalName(),
+                createRoleRequestDto,
+                user
+                );
     }
 
 
