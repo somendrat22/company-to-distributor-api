@@ -26,19 +26,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity loginUser(@RequestBody UserLoginDto userLoginDto){
         log.info("Inside Login User Method");
-        try{
-            UserLoginRespDto loginResp = authService.loginUser(userLoginDto);
-            return new ResponseEntity(loginResp, HttpStatus.OK);
-        }catch (InvalidCredentialsException e){
-
-            HashMap<String, String> resp = new HashMap<>();
-            resp.put("message", e.getMessage());
-            return new ResponseEntity(resp, HttpStatus.UNAUTHORIZED);
-        }catch (Exception e){
-            e.printStackTrace();
-            HashMap<String, String> resp = new HashMap<>();
-            resp.put("message", e.getMessage());
-            return new ResponseEntity(resp, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        UserLoginRespDto loginResp = authService.loginUser(userLoginDto);
+        return new ResponseEntity(loginResp, HttpStatus.OK);
     }
 }

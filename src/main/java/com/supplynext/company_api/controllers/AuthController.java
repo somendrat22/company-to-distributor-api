@@ -17,29 +17,25 @@ import java.util.HashMap;
 @RequestMapping("/c2d/api/v1/auth")
 public class AuthController {
 
-    @Autowired
+
     AuthService authService;
-    @Autowired
     CompanyService companyService;
+
+    @Autowired
+    public AuthController(AuthService authService, CompanyService companyService){
+        this.companyService = companyService;
+        this.authService = authService;
+    }
 
     @PostMapping("/create-role")
     public ResponseEntity createRole(
             @RequestBody CreateRoleRequestDto createRoleRequestDto,
             @RequestHeader String Authorization
             ){
-        try{
+
             User user = authService.isUserHavingAccessToPerformOperation(Authorization, "CREATE_ROLE");
             Role role = companyService.createRoleForCompanyByUserSession(user, createRoleRequestDto);
             return new ResponseEntity(role, HttpStatus.CREATED);
-        }catch (UnAuthorizedException e){
-            HashMap<String, String> resp = new HashMap<>();
-            resp.put("message", e.getMessage());
-            return new ResponseEntity(resp, HttpStatus.UNAUTHORIZED);
-        }catch (Exception e){
-            e.printStackTrace();
-            HashMap<String, String> resp = new HashMap<>();
-            resp.put("message", e.getMessage());
-            return new ResponseEntity(resp, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+
     }
 }
